@@ -1,0 +1,107 @@
+هذا الكود الكامل. انسخه كله والصقه في ملف نصي (Notepad مثلاً)، ثم احفظه باسم `index.html` وبترميز UTF-8 حتى تظهر العربية صحيحة.
+
+```html
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>نشاط تفاعلي: أنماط نقل الألياف البصرية</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#e9edf3;--panel:#fff;--ink:#1f2d3d;--mute:#5b6b7d;--line:#c9d3df;--acc:#2f6fd0;--gold:#ffc000;--ok:#1d8a4e;--okbg:#dff3e6;--bad:#c0392b;--badbg:#fbe3df;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#3d4f66;--panel:#2c3a4c;--ink:#f1f4f8;--mute:#b4c0cf;--line:#4d6079;--acc:#7fb0ff;--ok:#6fdca0;--okbg:#1f4d38;--bad:#ff9a8c;--badbg:#5a2b27}}
+:root[data-theme="dark"]{--bg:#3d4f66;--panel:#2c3a4c;--ink:#f1f4f8;--mute:#b4c0cf;--line:#4d6079;--acc:#7fb0ff;--ok:#6fdca0;--okbg:#1f4d38;--bad:#ff9a8c;--badbg:#5a2b27}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Tajawal",Tahoma,Arial,sans-serif;display:flex;justify-content:center;padding:16px}
+.slide{width:100%;max-width:1100px;background:var(--panel);border:2px solid var(--line);border-radius:14px;padding:22px 26px}
+header{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;border-bottom:4px solid var(--gold);padding-bottom:10px}
+h1{margin:0;font-size:clamp(20px,3.2vw,30px);font-weight:800}
+.en{color:var(--acc);font-weight:700;font-size:14px;direction:ltr}
+p.hint{margin:10px 0 14px;color:var(--mute);font-size:16px}
+.row{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:10px;margin-bottom:8px}
+.row.ok{background:var(--okbg);border-color:var(--ok)}
+.row.bad{background:var(--badbg);border-color:var(--bad)}
+.q{font-size:clamp(15px,2vw,18px);font-weight:500}
+.q small{display:block;color:var(--mute);font-size:12px;direction:ltr;text-align:right}
+.opts{display:flex;gap:6px;flex-wrap:wrap}
+button{font:inherit;cursor:pointer;color:var(--ink);background:transparent;border:1.5px solid var(--line);border-radius:999px;padding:7px 14px;font-size:14px;font-weight:700}
+button:hover:not(:disabled){border-color:var(--acc)}
+button:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+button.right{background:var(--ok);border-color:var(--ok);color:#fff}
+button.wrong{border-color:var(--bad);color:var(--bad);text-decoration:line-through}
+button:disabled{cursor:default}
+.fb{grid-column:1/-1;font-size:14px;color:var(--mute);margin:0;min-height:0}
+footer{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:12px}
+.score{font-size:20px;font-weight:800}
+.reset{border-color:var(--acc);color:var(--acc)}
+@media(max-width:640px){.row{grid-template-columns:1fr}.slide{padding:16px}}
+</style>
+</head>
+<body>
+<main class="slide">
+  <header>
+    <h1>نشاط تفاعلي: أي نوع من الألياف؟</h1>
+    <span class="en">Modes of Fiber Transmission</span>
+  </header>
+  <p class="hint">اقرأ كل عبارة ثم اختر نوع الليف البصري الذي تصفه.</p>
+  <div id="list"></div>
+  <footer>
+    <div class="score" aria-live="polite">النتيجة: <span id="sc">0</span> / <span id="tot">0</span></div>
+    <button class="reset" id="reset">إعادة المحاولة</button>
+  </footer>
+</main>
+<script>
+var TYPES=[{id:"s",t:"أحادي النمط"},{id:"g",t:"متعدد الأنماط مدرّج"},{id:"p",t:"متعدد الأنماط حاد"}];
+var NAME={s:"الليف أحادي النمط",g:"الليف متعدد الأنماط ذو المعامل المتدرج",p:"الليف متعدد الأنماط ذو المعامل التدريجي الحاد"};
+var Q=[
+["تُستخدم في الشبكات المحلية (LANs)","Used for LANs","g","مقطع معامل الانكسار المكافئ يقلل التشتت النمطي فيناسب الشبكات المحلية."],
+["قطر القلب فيه 3–10 ميكرومتر","3–10 µm core","s","القلب الضيق جداً يسمح بنمط واحد فقط."],
+["تُستخدم مع الليزرات عالية الطاقة","Used for high power lasers","p","قلبه الكبير (100–1500 ميكرومتر) يتحمل طاقة عالية."],
+["تشتت نمطي عالٍ","High modal dispersion","p","تتفاوت أزمنة وصول الأشعة لأن مساراتها مختلفة وسرعتها ثابتة."],
+["مقطع معامل الانكسار فيه مكافئ (Parabolic)","Parabolic index profile","g","يتناقص معامل الانكسار تدريجياً من المركز نحو الغلاف."],
+["يحقق شرط V < 2.405 وينتشر فيه النمط الأساسي (الرتبة صفر)","V < 2.405, zero-order mode","s","عند V أقل من 2.405 يبقى النمط الأساسي فقط."]
+];
+var done,score;
+function build(){
+  done=0;score=0;
+  var L=document.getElementById("list");L.innerHTML="";
+  Q.forEach(function(q,i){
+    var r=document.createElement("div");r.className="row";
+    var d=document.createElement("div");d.className="q";d.innerHTML=q[0]+"<small>"+q[1]+"</small>";
+    var o=document.createElement("div");o.className="opts";
+    var fb=document.createElement("p");fb.className="fb";
+    TYPES.forEach(function(t){
+      var b=document.createElement("button");b.textContent=t.t;
+      b.onclick=function(){
+        var ok=t.id===q[2];
+        done++;if(ok)score++;
+        Array.prototype.forEach.call(o.children,function(x,k){
+          x.disabled=true;
+          if(TYPES[k].id===q[2])x.classList.add("right");
+        });
+        if(!ok)b.classList.add("wrong");
+        r.classList.add(ok?"ok":"bad");
+        fb.textContent=(ok?"إجابة صحيحة. ":"الإجابة الصحيحة: "+NAME[q[2]]+". ")+q[3];
+        upd();
+      };
+      o.appendChild(b);
+    });
+    r.appendChild(d);r.appendChild(o);r.appendChild(fb);L.appendChild(r);
+  });
+  upd();
+}
+function upd(){
+  document.getElementById("sc").textContent=score;
+  document.getElementById("tot").textContent=Q.length;
+}
+document.getElementById("reset").onclick=build;
+build();
+</script>
+</body>
+</html>
+```
+
+يمكنك تعديل الأسئلة من المصفوفة `Q` في الجزء الأخير من الكود. كل سؤال فيه أربعة عناصر بالترتيب: نص العبارة بالعربية، ونصها بالإنجليزية، ورمز الإجابة الصحيحة (`s` أحادي النمط، `g` مدرّج، `p` حاد)، ثم نص التفسير.
